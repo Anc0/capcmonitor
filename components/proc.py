@@ -2,7 +2,7 @@ from time import time, sleep
 
 from psutil import pids
 
-from src.components.template import TemplateListener
+from components.template import TemplateListener
 
 
 class ProcListener(TemplateListener):
@@ -21,8 +21,10 @@ class ProcListener(TemplateListener):
         while True:
             start_time += self.sampling_rate
 
+            proc_num = len(pids())
+
             # Query data from the os
-            self.mqtt_client.publish("cabackend/procnum_01")
+            self.mqtt_client.publish("cabackend/procnum_01", proc_num)
 
             # Check if stop
             if self.kill:

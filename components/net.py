@@ -2,7 +2,7 @@ from time import time, sleep
 
 from psutil import net_io_counters
 
-from src.components.template import TemplateListener
+from components.template import TemplateListener
 
 
 class NetListener(TemplateListener):

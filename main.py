@@ -2,11 +2,11 @@ from time import sleep
 
 from paho.mqtt.client import Client
 
+from components.cpu import CpuListener
+from components.mem import MemListener
+from components.net import NetListener
+from components.proc import ProcListener
 from config.settings import MQTT_HOST
-from src.components.cpu import CpuListener
-from src.components.mem import MemListener
-from src.components.net import NetListener
-from src.components.proc import ProcListener
 
 
 class PcMonitor:

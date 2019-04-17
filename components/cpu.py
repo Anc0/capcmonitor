@@ -2,7 +2,7 @@ from time import time, sleep
 
 from psutil import cpu_percent
 
-from src.components.template import TemplateListener
+from components.template import TemplateListener
 
 
 class CpuListener(TemplateListener):

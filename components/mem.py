@@ -2,7 +2,7 @@ from time import time, sleep
 
 from psutil import virtual_memory
 
-from src.components.template import TemplateListener
+from components.template import TemplateListener
 
 
 class MemListener(TemplateListener):
