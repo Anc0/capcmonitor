@@ -6,6 +6,7 @@ from config.settings import MQTT_HOST
 from src.components.cpu import CpuListener
 from src.components.mem import MemListener
 from src.components.net import NetListener
+from src.components.proc import ProcListener
 
 
 class PcMonitor:
@@ -19,6 +20,7 @@ class PcMonitor:
         self.cpu_component = None
         self.mem_component = None
         self.net_component = None
+        self.proc_component = None
 
     def run(self):
         """
@@ -32,12 +34,17 @@ class PcMonitor:
         self.cpu_component = CpuListener(self.sampling_rate, self.mqtt_client)
         self.mem_component = MemListener(self.sampling_rate, self.mqtt_client)
         self.net_component = NetListener(self.sampling_rate, self.mqtt_client)
+        self.proc_component = ProcListener(self.sampling_rate, self.mqtt_client)
         print("Components initialized.")
 
         print("Running the components...")
         self.cpu_component.start()
+        sleep(self.thread_delay)
         self.mem_component.start()
+        sleep(self.thread_delay)
         self.net_component.start()
+        sleep(self.thread_delay)
+        self.proc_component.start()
         print("Components running.")
 
         try:
@@ -45,10 +52,9 @@ class PcMonitor:
                 pass
         except KeyboardInterrupt:
             self.cpu_component.stop_thread()
-            sleep(self.thread_delay)
             self.mem_component.stop_thread()
-            sleep(self.thread_delay)
             self.net_component.stop_thread()
+            self.proc_component.stop_thread()
 
 
 if __name__ == "__main__":

@@ -30,6 +30,6 @@ class MemListener(TemplateListener):
 
             # Check if stop
             if self.kill:
-                print("MemListener returning... Godobye, au revoir and auf wiedersehen.")
+                print("MemListener returning...")
                 return 0
             sleep(max(0.0, start_time - time()))

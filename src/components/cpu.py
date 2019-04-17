@@ -32,6 +32,6 @@ class CpuListener(TemplateListener):
 
             # Check if stop
             if self.kill:
-                print("CpuListener returning... Sayonara, vi ses and ciao.")
+                print("CpuListener returning...")
                 return 0
             sleep(max(0.0, (start_time - time())))

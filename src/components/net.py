@@ -1,6 +1,6 @@
 from time import time, sleep
 
-from psutil import virtual_memory, net_io_counters
+from psutil import net_io_counters
 
 from src.components.template import TemplateListener
 
@@ -24,7 +24,6 @@ class NetListener(TemplateListener):
 
             # Query data from the os
             data = net_io_counters()
-            print(data)
 
             # Publish stats for every data
             self.mqtt_client.publish("cabackend/netpacketssent_01", data[2])
@@ -32,6 +31,6 @@ class NetListener(TemplateListener):
 
             # Check if stop
             if self.kill:
-                print("MemListener returning... Godobye, au revoir and auf wiedersehen.")
+                print("NetListener returning...")
                 return 0
             sleep(max(0.0, start_time - time()))
