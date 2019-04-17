@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from time import sleep
 
 from paho.mqtt.client import Client
@@ -6,7 +7,7 @@ from components.cpu import CpuListener
 from components.mem import MemListener
 from components.net import NetListener
 from components.proc import ProcListener
-from config.settings import MQTT_HOST
+from config.settings import MQTT_HOST, PYTHON_PATH, SCRIPT_PATH
 
 
 class PcMonitor:
@@ -56,7 +57,22 @@ class PcMonitor:
             self.net_component.stop_thread()
             self.proc_component.stop_thread()
 
+    @staticmethod
+    def generate_windows_script():
+        """
+        Generate .bat file that can be run on system startup.
+        """
+        with open("start_pcmonitor.bat", "w") as bat_file:
+            bat_file.write(PYTHON_PATH + " " + SCRIPT_PATH + "\npause")
+
 
 if __name__ == "__main__":
-    monitor = PcMonitor()
-    monitor.run()
+    parser = ArgumentParser(description='Read program flags.')
+    parser.add_argument('-w', dest='windows', action='store_true')
+    args = parser.parse_args()
+
+    if args.windows:
+        PcMonitor().generate_windows_script()
+    else:
+        monitor = PcMonitor()
+        monitor.run()
