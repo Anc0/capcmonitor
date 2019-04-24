@@ -32,9 +32,9 @@ class PcMonitor:
         print("Connection successful.")
 
         print("Initializing the components...")
-        self.cpu_component = CpuListener(self.sampling_rate, self.mqtt_client)
-        self.mem_component = MemListener(self.sampling_rate, self.mqtt_client)
-        self.net_component = NetListener(self.sampling_rate, self.mqtt_client)
+        self.cpu_component = CpuListener(50, self.mqtt_client)
+        self.mem_component = MemListener(50, self.mqtt_client)
+        self.net_component = NetListener(50, self.mqtt_client)
         self.proc_component = ProcListener(self.sampling_rate, self.mqtt_client)
         print("Components initialized.")
 
