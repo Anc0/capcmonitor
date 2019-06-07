@@ -1,3 +1,4 @@
+from datetime import datetime
 from time import time, sleep
 
 from psutil import cpu_percent
@@ -22,7 +23,7 @@ class CpuListener(TemplateListener):
             start_time += self.sampling_rate
 
             # Query data from the os
-            data = cpu_percent(percpu=True, interval=self.sampling_rate)
+            data = cpu_percent(percpu=True)
 
             # Publish stat for every data
             i = 1
@@ -34,4 +35,5 @@ class CpuListener(TemplateListener):
             if self.kill:
                 print("CpuListener returning...")
                 return 0
-            # sleep(max(0.0, (start_time - time())))
+
+            sleep(max(0.0, (start_time - time())))

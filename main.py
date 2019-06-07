@@ -32,9 +32,9 @@ class PcMonitor:
         print("Connection successful.")
 
         print("Initializing the components...")
-        self.cpu_component = CpuListener(50, self.mqtt_client)
-        self.mem_component = MemListener(50, self.mqtt_client)
-        self.net_component = NetListener(50, self.mqtt_client)
+        self.cpu_component = CpuListener(125, self.mqtt_client)
+        self.mem_component = MemListener(125, self.mqtt_client)
+        self.net_component = NetListener(125, self.mqtt_client)
         self.proc_component = ProcListener(self.sampling_rate, self.mqtt_client)
         print("Components initialized.")
 
@@ -56,6 +56,8 @@ class PcMonitor:
             self.mem_component.stop_thread()
             self.net_component.stop_thread()
             self.proc_component.stop_thread()
+
+        return 0
 
     @staticmethod
     def generate_windows_script():

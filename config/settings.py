@@ -1,4 +1,4 @@
-MQTT_HOST = "localhost"
+MQTT_HOST = "127.0.0.1"
 MQTT_PORT = 1883
 MQTT_KEEPALIVE = 60
 
