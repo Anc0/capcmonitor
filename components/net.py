@@ -17,11 +17,7 @@ class NetListener(TemplateListener):
         """
         Periodically (according to the sampling rate) sample relevant memory data.
         """
-        start_time = time()
-
         while True:
-            start_time += self.sampling_rate
-
             # Query data from the os
             data = net_io_counters()
 
@@ -33,4 +29,4 @@ class NetListener(TemplateListener):
             if self.kill:
                 print("NetListener returning...")
                 return 0
-            sleep(max(0.0, start_time - time()))
+            sleep(self.sampling_rate)

@@ -18,10 +18,7 @@ class CpuListener(TemplateListener):
         """
         Periodically (according to the sampling rate) sample relevant cpu data.
         """
-        start_time = time()
         while True:
-            start_time += self.sampling_rate
-
             # Query data from the os
             data = cpu_percent(percpu=True)
 
@@ -36,4 +33,4 @@ class CpuListener(TemplateListener):
                 print("CpuListener returning...")
                 return 0
 
-            sleep(max(0.0, (start_time - time())))
+            sleep(self.sampling_rate)
