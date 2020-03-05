@@ -7,7 +7,7 @@ from components.cpu import CpuListener
 from components.mem import MemListener
 from components.net import NetListener
 from components.proc import ProcListener
-from config.settings import MQTT_HOST, PYTHON_PATH, SCRIPT_PATH
+from config.settings import MQTT_HOST, PYTHON_PATH, SCRIPT_PATH, TOPIC_CONFIGURE, DEVICE_NAME
 
 
 class PcMonitor:
@@ -26,23 +26,27 @@ class PcMonitor:
         """
         Initialize all listeners threads and execute them until an external signal.
         """
-        print("Connecting to the mqtt broker...")
+        print("Connecting to the mqtt broker...", end="")
         self.mqtt_client.connect(MQTT_HOST)
-        print("Connection successful.")
+        print("DONE")
 
-        print("Initializing the components...")
+        print("Introuding to the system...", end="")
+        self.mqtt_client.publish(TOPIC_CONFIGURE + "name", DEVICE_NAME)
+        print("DONE")
+
+        print("Initializing the components...", end="")
         self.cpu_component = CpuListener(1000, self.mqtt_client)
         self.mem_component = MemListener(1000, self.mqtt_client)
         self.net_component = NetListener(1000, self.mqtt_client)
-        print("Components initialized.")
+        print("DONE")
 
-        print("Running the components...")
+        print("Running the components...", end="")
         self.cpu_component.start()
         sleep(self.thread_delay)
         self.mem_component.start()
         sleep(self.thread_delay)
         self.net_component.start()
-        print("Components running.")
+        print("DONE")
 
         try:
             while True:
@@ -62,14 +66,25 @@ class PcMonitor:
         with open("start_pcmonitor.bat", "w") as bat_file:
             bat_file.write(PYTHON_PATH + " " + SCRIPT_PATH + "\npause")
 
+    @staticmethod
+    def generate_linux_script():
+        """
+        Generate bash file that can be run on system startup.
+        """
+        with open("start_pcmonitor.sh", "w") as sh_file:
+            sh_file.write("#!/bin/bash\n" + PYTHON_PATH + " " + SCRIPT_PATH)
+
 
 if __name__ == "__main__":
     parser = ArgumentParser(description='Read program flags.')
     parser.add_argument('-w', dest='windows', action='store_true')
+    parser.add_argument('-l', dest='linux', action='store_true')
     args = parser.parse_args()
 
     if args.windows:
         PcMonitor().generate_windows_script()
+    elif args.linux:
+        PcMonitor().generate_linux_script()
     else:
         monitor = PcMonitor()
         monitor.run()

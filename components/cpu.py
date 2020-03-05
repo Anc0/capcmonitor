@@ -4,6 +4,7 @@ from time import time, sleep
 from psutil import cpu_percent
 
 from components.template import TemplateListener
+from config.settings import TOPIC_CONFIGURE, TOPIC_DATA
 
 
 class CpuListener(TemplateListener):
@@ -18,6 +19,12 @@ class CpuListener(TemplateListener):
         """
         Periodically (according to the sampling rate) sample relevant cpu data.
         """
+        data = cpu_percent(percpu=True)
+        i = 1
+        for _ in data:
+            self.mqtt_client.publish(TOPIC_CONFIGURE + "sensor", "cpu_{}".format(str(i).zfill(2)))
+            i += 1
+
         while True:
             # Query data from the os
             data = cpu_percent(percpu=True)
@@ -25,7 +32,7 @@ class CpuListener(TemplateListener):
             # Publish stat for every data
             i = 1
             for core in data:
-                self.mqtt_client.publish("cabackend/cpuusage_0{}".format(i), core)
+                self.mqtt_client.publish(TOPIC_DATA + "cpu_{}".format(str(i).zfill(2)), core)
                 i += 1
 
             # Check if stop
